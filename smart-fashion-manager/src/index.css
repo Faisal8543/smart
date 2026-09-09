@@ -1,0 +1,737 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --breakpoint-tablet: 768px;
+  --breakpoint-laptop: 1366px;
+  --breakpoint-desktop1600: 1600px;
+  --breakpoint-desktop1920: 1920px;
+}
+
+:root {
+  --header-height: 124px;
+  --app-header-height: 124px;
+}
+
+.global-app-header {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: var(--header-height) !important;
+  z-index: 40 !important;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Universal typography and UI controls to ensure consistent Poppins throughout the entire app */
+h1, h2, h3, h4, h5, h6,
+p, span, a, label,
+button, input, select, textarea, optgroup, option,
+table, th, td, tr, thead, tbody, tfoot,
+ul, ol, li,
+form, fieldset, legend,
+dialog,
+.font-sans,
+.font-serif {
+  font-family: 'Poppins', sans-serif;
+}
+
+html {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: #020617; /* bg-slate-950 */
+  color: #f1f5f9; /* text-slate-100 */
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100vw;
+  min-height: 100vh;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+.dark ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(180, 140, 60, 0.3);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(180, 140, 60, 0.6);
+}
+
+/* Printable Styles */
+@page {
+  size: 80mm auto;
+  margin: 0;
+}
+
+@media screen {
+  .print-only,
+  .print-only-invoice,
+  #invoice-print-area,
+  #printable-area.print-only-invoice {
+    display: none !important;
+  }
+}
+
+@media print {
+  @page {
+    size: 80mm auto;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    box-sizing: border-box !important;
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+    border-color: #000000 !important;
+    opacity: 1 !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    text-shadow: none !important;
+  }
+
+  html:not(:has(#barcode-direct-print-area)),
+  body:not(:has(#barcode-direct-print-area)) {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    width: 80mm !important;
+    max-width: 80mm !important;
+    min-width: 80mm !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 10.5px !important;
+    font-weight: 400 !important;
+    line-height: 1.25 !important;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Hide screen-only navigation, modals, headers, footers, and action buttons */
+  .no-print,
+  header,
+  nav,
+  aside,
+  footer,
+  .global-app-header,
+  button,
+  #close-receipt-modal,
+  #receipt-print-btn,
+  #open-whatsapp-direct-btn,
+  .modal-backdrop {
+    display: none !important;
+  }
+
+  /* Reset overlay wrappers during print so thermal receipts are not clipped, centered, or padded */
+  .fixed,
+  .backdrop-blur-sm,
+  .overflow-y-auto,
+  .overflow-x-hidden,
+  .overflow-hidden {
+    position: static !important;
+    overflow: visible !important;
+    max-height: none !important;
+    height: auto !important;
+    width: auto !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #invoice-print-area,
+  #invoice-print-area *,
+  #printable-area,
+  #printable-area *,
+  .print-only-invoice,
+  .print-only-invoice * {
+    visibility: visible !important;
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+    opacity: 1 !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    text-shadow: none !important;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  }
+
+  .print-only,
+  .print-only-invoice,
+  #invoice-print-area,
+  #printable-area.print-only-invoice {
+    display: block !important;
+  }
+
+  #invoice-print-area,
+  #printable-area {
+    display: block !important;
+    position: relative !important;
+    width: 75mm !important;
+    max-width: 75mm !important;
+    min-width: 75mm !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding: 1.5mm 0 1.5mm 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+    transform: none !important;
+    float: none !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 10.5px !important;
+    line-height: 1.25 !important;
+    letter-spacing: 0px !important;
+  }
+
+  #invoice-print-area *,
+  #printable-area * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    color: #000000 !important;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    letter-spacing: 0px !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  #invoice-print-area .receipt-header,
+  #printable-area .receipt-header,
+  #invoice-print-area .invoice-meta,
+  #printable-area .invoice-meta,
+  #invoice-print-area .items-table-wrapper,
+  #printable-area .items-table-wrapper,
+  #invoice-print-area .items-table,
+  #printable-area .items-table,
+  #invoice-print-area .calc-section,
+  #printable-area .calc-section,
+  #invoice-print-area .savings-container,
+  #printable-area .savings-container,
+  #invoice-print-area .tax-breakdown,
+  #printable-area .tax-breakdown,
+  #invoice-print-area .grand-total-box,
+  #printable-area .grand-total-box,
+  #invoice-print-area .payment-container,
+  #printable-area .payment-container,
+  #invoice-print-area .receipt-footer,
+  #printable-area .receipt-footer,
+  #invoice-print-area .exchange-policy-box,
+  #printable-area .exchange-policy-box,
+  #invoice-print-area .customer-care-box,
+  #printable-area .customer-care-box,
+  #invoice-print-area .barcode-wrapper,
+  #printable-area .barcode-wrapper {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  #invoice-print-area .header-title,
+  #printable-area .header-title,
+  #invoice-print-area h4,
+  #printable-area h4 {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    line-height: 1.15 !important;
+    text-align: center !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0px !important;
+    margin: 0 0 1px 0 !important;
+  }
+
+  #invoice-print-area .header-sub,
+  #printable-area .header-sub,
+  #invoice-print-area .header-contact,
+  #printable-area .header-contact {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+    letter-spacing: 0px !important;
+    margin: 0.5px 0 !important;
+  }
+
+  #invoice-print-area .thank-you-title,
+  #printable-area .thank-you-title {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 9.5px !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: block !important;
+    width: 100% !important;
+    margin-top: 2px !important;
+    margin-bottom: 1px !important;
+    letter-spacing: 0px !important;
+  }
+
+  #invoice-print-area .grand-total-line,
+  #printable-area .grand-total-line,
+  #invoice-print-area .grand-total-val,
+  #printable-area .grand-total-val {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+    text-transform: uppercase !important;
+  }
+
+  #invoice-print-area .payment-container,
+  #printable-area .payment-container {
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+    padding-top: 0px !important;
+    padding-bottom: 2px !important;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  }
+
+  #invoice-print-area .payment-status-row,
+  #printable-area .payment-status-row {
+    margin-top: 0.5px !important;
+    margin-bottom: 0.5px !important;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  }
+
+  /* Strict center alignment for footer section */
+  #invoice-print-area .receipt-footer,
+  #printable-area .receipt-footer,
+  #invoice-print-area .receipt-footer *,
+  #printable-area .receipt-footer * {
+    text-align: center !important;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    box-sizing: border-box !important;
+  }
+
+  #invoice-print-area .receipt-footer p,
+  #printable-area .receipt-footer p,
+  #invoice-print-area .receipt-footer div,
+  #printable-area .receipt-footer div {
+    text-align: center !important;
+  }
+
+  #invoice-print-area .customer-care-box,
+  #printable-area .customer-care-box {
+    border-top: 1px dashed #000000 !important;
+    margin-top: 1.5px !important;
+    padding-top: 1.5px !important;
+  }
+
+  #invoice-print-area .barcode-wrapper,
+  #printable-area .barcode-wrapper {
+    margin-top: 1.5px !important;
+    margin-bottom: 0px !important;
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  #invoice-print-area svg,
+  #printable-area svg {
+    display: block !important;
+    margin: 0 auto !important;
+    background: #ffffff !important;
+    overflow: visible !important;
+  }
+
+  #invoice-print-area svg rect,
+  #printable-area svg rect {
+    fill: #000000 !important;
+    shape-rendering: crispEdges !important;
+  }
+
+  #invoice-print-area button,
+  #invoice-print-area input,
+  #invoice-print-area select,
+  #invoice-print-area textarea,
+  #invoice-print-area [role="button"],
+  #invoice-print-area .no-print,
+  #printable-area button,
+  #printable-area input,
+  #printable-area select,
+  #printable-area textarea,
+  #printable-area [role="button"],
+  #printable-area .no-print {
+    display: none !important;
+  }
+
+  #invoice-print-area table,
+  #printable-area table {
+    border-collapse: collapse !important;
+    width: 75mm !important;
+    max-width: 75mm !important;
+    min-width: 75mm !important;
+    table-layout: fixed !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    letter-spacing: 0px !important;
+  }
+
+  #invoice-print-area table th,
+  #printable-area table th {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-weight: 600 !important;
+    border-bottom: 1px dashed #000000 !important;
+    padding: 2px 1px 2px 0 !important;
+    font-size: 10.5px !important;
+    line-height: 1.25 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0px !important;
+  }
+
+  #invoice-print-area table td,
+  #printable-area table td {
+    padding: 2px 1px !important;
+    vertical-align: top !important;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 10.5px !important;
+    line-height: 1.25 !important;
+    letter-spacing: 0px !important;
+  }
+
+  /* No line between individual products */
+  #invoice-print-area .item-row,
+  #printable-area .item-row {
+    border-bottom: none !important;
+  }
+
+  #invoice-print-area .item-desc-col,
+  #printable-area .item-desc-col {
+    width: 44% !important;
+    max-width: 33mm !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+  }
+
+  #invoice-print-area .item-name,
+  #printable-area .item-name {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 10.5px !important;
+    line-height: 1.25 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    letter-spacing: 0px !important;
+  }
+
+  #invoice-print-area .item-meta,
+  #printable-area .item-meta {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 9px !important;
+    font-weight: 400 !important;
+    line-height: 1.15 !important;
+    margin-top: 1px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    letter-spacing: 0px !important;
+  }
+
+  #invoice-print-area img,
+  #invoice-print-area svg,
+  #invoice-print-area canvas,
+  #printable-area img,
+  #printable-area svg,
+  #printable-area canvas {
+    max-width: 100% !important;
+  }
+
+  #printable-area thead {
+    display: table-header-group !important;
+  }
+
+  /* Receipt Logo & QR Image constraints in print */
+  #printable-area img[alt*="Smart Fashion" i],
+  #printable-area img[alt*="logo" i] {
+    height: 22px !important;
+    max-height: 24px !important;
+    width: auto !important;
+    display: block !important;
+    margin: 0 auto 2px auto !important;
+    object-fit: contain !important;
+  }
+
+  #invoice-print-area img[alt*="QR" i],
+  #invoice-print-area img[alt*="UPI" i],
+  #printable-area img[alt*="QR" i],
+  #printable-area img[alt*="UPI" i] {
+    width: 48px !important;
+    height: 48px !important;
+    max-width: 48px !important;
+    max-height: 48px !important;
+    margin: 0 auto !important;
+    display: block !important;
+    object-fit: contain !important;
+  }
+
+  /* Borders */
+  .border-dashed-b,
+  .border-b-dashed {
+    border-bottom: 1px dashed #000000 !important;
+    padding-bottom: 2px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .border-dashed-t,
+  .border-t-dashed {
+    border-top: 1px dashed #000000 !important;
+    padding-top: 2px !important;
+    margin-top: 2px !important;
+  }
+
+  .border-dashed-t-inner {
+    border-top: 1px dashed #000000 !important;
+    padding-top: 1.5px !important;
+    margin-top: 1.5px !important;
+  }
+}
+
+/* ==========================================================================
+   Dedicated Barcode Label Print Media Rule
+   Ensures #barcode-direct-print-area is the only visible element during print,
+   setting its width and height to auto while hiding all navigation, headers,
+   and UI controls.
+   ========================================================================== */
+@media print {
+  @page {
+    size: 50mm 25mm;
+    margin: 0;
+  }
+
+  /* Reset document flow when printing barcode labels */
+  html:has(#barcode-direct-print-area),
+  body:has(#barcode-direct-print-area) {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Hide all navigation, headers, sidebars, footers, and UI controls */
+  nav,
+  header,
+  aside,
+  footer,
+  button,
+  input,
+  select,
+  textarea,
+  .no-print,
+  .global-app-header,
+  #invoice-print-area,
+  #printable-area,
+  .print-only-invoice,
+  #barcode-studio-workspace > header,
+  #barcode-studio-workspace > div:not(#barcode-direct-print-area),
+  #barcode-studio-workspace > footer {
+    display: none !important;
+  }
+
+  /* Ensure workspace wrapper does not clip or offset direct barcode output */
+  #barcode-studio-workspace {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    background: transparent !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Ensure #barcode-direct-print-area is the only visible element during print */
+  body:has(#barcode-direct-print-area) * {
+    visibility: hidden !important;
+  }
+
+  body:has(#barcode-direct-print-area) #barcode-direct-print-area,
+  body:has(#barcode-direct-print-area) #barcode-direct-print-area * {
+    visibility: visible !important;
+  }
+
+  /* Target #barcode-direct-print-area setting width and height to auto */
+  #barcode-direct-print-area {
+    display: block !important;
+    visibility: visible !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    overflow: visible !important;
+  }
+
+  #barcode-direct-print-area * {
+    visibility: visible !important;
+  }
+}
+
+.gold-gradient {
+  background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa7c11 100%);
+}
+
+.gold-border-gradient {
+  border-image: linear-gradient(135deg, #aa7c11 0%, #d4af37 100%) 1;
+}
+
+.gold-text-shimmer {
+  background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 50%, #aa7c11 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Selected Ledger View Bar */
+.selected-ledger-bar {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  background-color: #020617;
+}
+
+#dashboard-view-container,
+.dashboard-container {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* Custom Thin Gold Scrollbar for Sidebar Navigation */
+.custom-sidebar-scrollbar {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: #f59e0b #0f172a;
+}
+
+.custom-sidebar-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-sidebar-scrollbar::-webkit-scrollbar-track {
+  background: #0f172a;
+  border-radius: 9999px;
+}
+
+.custom-sidebar-scrollbar::-webkit-scrollbar-thumb {
+  background: #f59e0b;
+  border-radius: 9999px;
+}
+
+.custom-sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #fbbf24;
+}
+
+/* Custom premium date input utility */
+.premium-date-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Make sure the native calendar indicator covers the whole input and is invisible */
+.premium-date-container input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 20;
+}
+
+/* Reset standard picker styles */
+.premium-date-container input[type="date"] {
+  position: relative;
+  z-index: 10;
+  cursor: pointer;
+}
+
