@@ -1,0 +1,6 @@
+{
+  "name": "Smart Fashion Manager",
+  "description": "Showroom POS, Inventory, Billing & Retail Management System for SMART FASHION men's showroom.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
